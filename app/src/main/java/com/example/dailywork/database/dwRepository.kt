@@ -16,6 +16,6 @@ class dwRepository(private val dao:dwDao) {
         dao.deleteTask(task)
     }
     suspend fun updateTask(task: Task){
-        dao.updateTask()
+        dao.updateTask(task)
     }
 }
