@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.example.dailywork"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.dailywork"
@@ -46,27 +46,28 @@ dependencies {
     val arch_version = "2.2.0"
 
     // ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
     // ViewModel utilities for Compose
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
+    implementation (libs.androidx.lifecycle.viewmodel.compose)
     // LiveData
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
+    implementation (libs.androidx.lifecycle.livedata.ktx)
     // Lifecycles only (without ViewModel or LiveData)
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
+    implementation (libs.androidx.lifecycle.runtime.ktx)
     // Lifecycle utilities for Compose
-    implementation ("androidx.lifecycle:lifecycle-runtime-compose:$lifecycle_version")
+    implementation (libs.androidx.lifecycle.runtime.compose)
 
     // Saved state module for ViewModel
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version")
+    implementation (libs.androidx.lifecycle.viewmodel.savedstate)
 
     // Annotation processor
-    kapt("androidx.lifecycle:lifecycle-compiler:$lifecycle_version")
+    kapt(libs.androidx.lifecycle.compiler)
     val nav_version = "2.8.4"
 
-    implementation("androidx.navigation:navigation-compose:$nav_version")
+    implementation(libs.androidx.navigation.compose)
     val room_version = "2.6.1"
-
-    implementation("androidx.room:room-runtime:$room_version")
+    implementation(libs.androidx.room.runtime)
+    kapt(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
