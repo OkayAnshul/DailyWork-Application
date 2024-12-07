@@ -3,6 +3,7 @@ package com.example.dailywork.database
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
@@ -11,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 interface dwDao {
     @Query("Select * from dw_table order by id asc")
     fun getAllTask():Flow<List<Task>>
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun createTask(task:Task)
     @Update
     suspend fun updateTask(task: Task)
