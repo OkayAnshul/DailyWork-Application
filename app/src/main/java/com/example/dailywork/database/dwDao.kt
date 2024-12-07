@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface dwDao {
     @Query("Select * from dw_table order by id asc")
-    suspend fun getAllTask():Flow<List<Task>>
+    fun getAllTask():Flow<List<Task>>
     @Insert
     suspend fun createTask(task:Task)
     @Update
@@ -18,5 +18,5 @@ interface dwDao {
     @Delete
     suspend fun deleteTask(task: Task)
     @Query("select * from dw_table where id=:id ")
-    suspend fun getTask(id:Long):Flow<Task>
+    fun getTask(id:Long):Flow<Task>
 }
