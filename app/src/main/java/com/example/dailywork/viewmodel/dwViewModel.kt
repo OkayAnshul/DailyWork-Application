@@ -7,29 +7,32 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dailywork.database.Task
 import com.example.dailywork.database.dwRepository
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class dwViewModel(private val repository: dwRepository) :ViewModel(){
 
-    var allTask by mutableStateOf<List<Task>>(emptyList())
+//    var allTask by mutableStateOf<List<Task>>(emptyList())
+//
+//    init {
+//        viewModelScope.launch {
+//            repository.getAllTask.collect{
+//                task ->
+//                allTask = task
+//            }
+//        }
+//    }
 
-    init {
-        viewModelScope.launch {
-            repository.getAllTask.collect{
-                task ->
-                allTask = task
-            }
-        }
-    }
-    /*
      //StateFlow to expose the task list to the UI
-    val allTasks: StateFlow<List<Task>> = repository.allTasks
+    val allTask: StateFlow<List<Task>> = repository.getAllTask
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Lazily,
             initialValue = emptyList()
         )
-        */
+
 
     //This mutableState flow works best with compose ui(jetpack compose)
 //But alternative which is using stateIn is also very good

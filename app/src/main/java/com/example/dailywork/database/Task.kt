@@ -8,7 +8,9 @@ import java.time.LocalTime
 @Entity(tableName ="dw_table")
 data class Task(
     @PrimaryKey(autoGenerate = true)
-    val id:Int=0,
+    val id:Long=0,
     val title:String,
     val description:String,
-    val time:LocalTime)
+    var isDone:Boolean=false,
+//    val time:LocalTime
+)

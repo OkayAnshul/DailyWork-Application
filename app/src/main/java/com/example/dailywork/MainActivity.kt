@@ -11,37 +11,29 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModelProvider
+import com.example.dailywork.database.dwDatabase
+import com.example.dailywork.database.dwRepository
 import com.example.dailywork.ui.theme.DailyWorkTheme
+import com.example.dailywork.viewmodel.dwViewModel
+import com.example.dailywork.viewmodel.dwViewModelFactory
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        //Initialize the database
+        val database = dwDatabase.getDatabase(applicationContext)
+        //Create repository instance
+        val repository = dwRepository(database.dailyDao())
+        //Create viewmodel
+        val viewModel = ViewModelProvider(this,
+            dwViewModelFactory(repository)
+        )[dwViewModel::class.java]
+
+        //enableEdgeToEdge()
         setContent {
-            DailyWorkTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+            DailyWorkApplication(viewModel)
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    DailyWorkTheme {
-        Greeting("Android")
-    }
-}
