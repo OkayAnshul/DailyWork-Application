@@ -14,6 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -26,19 +27,21 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: dwViewModel // Inject ViewModel
 ) {
-    // Observe tasks and render in a LazyColumn
-    LazyColumn(
-        modifier = modifier.padding(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalAlignment = Alignment.Start
-    ) {
-        items(viewModel.allTask.value) { task: Task ->
-            // Each task is represented with a swipeable TaskBar
-            SwipeableTaskBar(
-                task = task,
-                onDelete = { viewModel.removeTask(task) },
-                onEdit = { /* Add edit logic here */ }
-            )
+    Column(){
+        // Observe tasks and render in a LazyColumn
+        LazyColumn(
+            modifier = modifier.padding(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.Start
+        ) {
+            items(viewModel.allTask.value) { task: Task ->
+                // Each task is represented with a swipeable TaskBar
+                SwipeableTaskBar(
+                    task = task,
+                    onDelete = { viewModel.removeTask(task) },
+                    onEdit = { /* Add edit logic here */ }
+                )
+            }
         }
     }
 }

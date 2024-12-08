@@ -6,6 +6,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -15,6 +16,7 @@ import com.example.dailywork.uiElements.HomeScreen
 import com.example.dailywork.uiElements.Screen
 import com.example.dailywork.viewmodel.dwViewModel
 
+
 @Composable
 fun DailyWorkApplication(viewModel: dwViewModel) {
     val navController = rememberNavController()
@@ -23,10 +25,11 @@ fun DailyWorkApplication(viewModel: dwViewModel) {
         topBar = {
             val currentRoute = navController.currentBackStackEntry?.destination?.route
             CustomTopBar(
-                 currentRoute ?: "Daily Work", // Default title if route is null
                  navController
             )
         },
+
+        containerColor = Color(0xFF1F2D2D),
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { navController.navigate(Screen.EditScreen.route) },

@@ -9,14 +9,22 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun CustomTopBar(appTitle: String, navHostController: NavHostController) {
-    // Check if the current screen is not the Home screen
+fun CustomTopBar(navHostController: NavHostController) {
+    // Observe the current route
+
+    val backStackEntry by navHostController.currentBackStackEntryAsState()
+    val currentRoute = backStackEntry?.destination?.route
+    val isHomeScreen = currentRoute == Screen.HomeScreen.route
+
     val navigationIcon: @Composable (() -> Unit) = {
-        if (navHostController.currentBackStackEntry?.destination?.route != Screen.HomeScreen.route)
+        if (!isHomeScreen)
         // Create a back arrow icon button
         {
             IconButton(onClick = { navHostController.popBackStack() }) {
@@ -27,16 +35,16 @@ fun CustomTopBar(appTitle: String, navHostController: NavHostController) {
             }
         }
     }
-
-
     // Always display the CenterAlignedTopAppBar
     CenterAlignedTopAppBar(
-        title = { Text(appTitle) },
+        title = { Text(currentRoute.toString()) },
         navigationIcon = navigationIcon, // Pass null or the icon
-//            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = ,
-//                titleContentColor = ,
-//                navigationIconContentColor = ,
-        //               )
+            colors = TopAppBarDefaults.
+            centerAlignedTopAppBarColors(containerColor =
+            Color(0xFF2A3C3C) ,
+               titleContentColor = Color.White,
+                navigationIconContentColor = Color.White,
+                      )
     )
 }
 
