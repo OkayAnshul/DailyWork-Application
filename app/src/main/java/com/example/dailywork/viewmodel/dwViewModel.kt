@@ -1,59 +1,91 @@
 package com.example.dailywork.viewmodel
 
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dailywork.database.Task
 import com.example.dailywork.database.dwRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class dwViewModel(private val repository: dwRepository) :ViewModel(){
+class dwViewModel(private val repository: dwRepository) : ViewModel() {
 
-//    var allTask by mutableStateOf<List<Task>>(emptyList())
-//
-//    init {
-//        viewModelScope.launch {
-//            repository.getAllTask.collect{
-//                task ->
-//                allTask = task
-//            }
-//        }
-//    }
-
-     //StateFlow to expose the task list to the UI
+    // StateFlow for the task list
     val allTask: StateFlow<List<Task>> = repository.getAllTask
+        .distinctUntilChanged()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Lazily,
             initialValue = emptyList()
         )
 
+    // Mutable state for selected task
+    private val _selectedTask = mutableStateOf<Task?>(null)
+    val selectedTask: Task? get() = _selectedTask.value
 
-    //This mutableState flow works best with compose ui(jetpack compose)
-//But alternative which is using stateIn is also very good
-    fun addTask(task:Task){
+    // Add a new task
+    fun addTask(task: Task) {
         viewModelScope.launch {
-            repository.createTask(task)
+            try {
+                repository.createTask(task)
+            } catch (e: Exception) {
+                // Log or handle error
+            }
         }
     }
-    fun removeTask(task:Task){
+
+    // Remove a task
+    fun removeTask(task: Task) {
         viewModelScope.launch {
-            repository.deleteTask(task)
+            try {
+                repository.deleteTask(task)
+            } catch (e: Exception) {
+                // Log or handle error
+            }
         }
     }
-    fun updateTask(task:Task){
+
+    // Edit an existing task
+    fun editTask(task: Task) {
         viewModelScope.launch {
-            repository.updateTask(task)
+            try {
+                repository.updateTask(task)
+            } catch (e: Exception) {
+                // Log or handle error
+            }
         }
     }
-    fun getTask(id:Long){
+
+    // Update task status
+    fun updateTaskStatus(task: Task, isDone: Boolean) {
         viewModelScope.launch {
-            repository.getTask(id)
+            try {
+                repository.updateTask(task.copy(isDone = isDone))
+            } catch (e: Exception) {
+                // Log or handle error
+            }
         }
     }
+
+//    // Get a task by ID
+//    fun getTask(id: Long) {
+//        viewModelScope.launch {
+//            try {
+//                _selectedTask.value = repository.getTaskFlow(id)
+//            } catch (e: Exception) {
+//                // Log or handle error
+//            }
+//        }
+//    }
+    fun getTaskState(taskId: Long): StateFlow<Task?> {
+        return repository.getTaskFlow(taskId).stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Lazily,
+            initialValue = null
+        )
+    }
+
 }

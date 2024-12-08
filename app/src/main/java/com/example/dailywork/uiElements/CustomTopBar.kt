@@ -41,10 +41,10 @@ fun CustomTopBar(navHostController: NavHostController) {
         navigationIcon = navigationIcon, // Pass null or the icon
             colors = TopAppBarDefaults.
             centerAlignedTopAppBarColors(containerColor =
-            Color(0xFF2A3C3C) ,
+            Color(0xFF2A3C3C),
                titleContentColor = Color.White,
                 navigationIconContentColor = Color.White,
-                      )
+                )
     )
 }
 
