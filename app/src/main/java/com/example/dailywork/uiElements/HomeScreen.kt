@@ -91,8 +91,8 @@ fun HomeScreen(
                             onEdit(task.id)
                         },
                         onTaskStatusChange = {
-                            //isDone ->
-                            //viewModel.editTask(task.copy(isDone = isDone))
+                            isDone ->
+                            viewModel.editTask(task.copy(isDone = isDone))
                         }
                     )
                 }

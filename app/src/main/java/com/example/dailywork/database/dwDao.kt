@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface dwDao {
-    @Query("SELECT * FROM dw_table ORDER BY id ASC")
+    @Query("SELECT * FROM dw_table ORDER BY isDone ASC, id ASC")
     fun getAllTask(): Flow<List<Task>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

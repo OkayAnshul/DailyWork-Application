@@ -2,6 +2,7 @@ package com.example.dailywork.uiElements
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.sharp.ArrowBack
+import androidx.compose.material.icons.sharp.Face
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -15,6 +16,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.dokar.sonner.Toaster
+import com.dokar.sonner.ToasterDefaults
+import com.dokar.sonner.rememberToasterState
 import com.example.dailywork.R
 
 @Composable
@@ -24,6 +28,7 @@ fun CustomTopBar(title:String,
                  ) {
     // Observe the current route
 
+    val toaster = rememberToasterState()
     val currentRoute=navHostController.currentBackStackEntryAsState().value?.destination?.route
     val isHomeScreen = currentRoute == Screen.HomeScreen.route
 
@@ -35,7 +40,12 @@ fun CustomTopBar(title:String,
                 Icon(imageVector = Icons.AutoMirrored.Sharp.ArrowBack, contentDescription = "Back")
             }
         } else {
-            IconButton(onClick = {}) {
+            Toaster(toaster)
+            IconButton(onClick = {toaster.show("Got me!\nCreated BY Anshul",
+                duration =ToasterDefaults.DurationShort)
+            })
+            {
+                Icon(imageVector = Icons.Sharp.Face, contentDescription ="Me")
             }
         }
     }

@@ -34,10 +34,6 @@ class dwViewModel(private val repository: dwRepository) : ViewModel() {
             initialValue = emptyList()
         )
 
-    // Mutable state for selected task
-    private val _selectedTask = mutableStateOf<Task?>(null)
-    val selectedTask: Task? get() = _selectedTask.value
-
     // Add a new task
     fun addTask(task: Task) {
         viewModelScope.launch {
@@ -82,17 +78,9 @@ class dwViewModel(private val repository: dwRepository) : ViewModel() {
         }
     }
 
-    // Fetch a task by ID and update the state
     fun getTask(id:Long):Flow<Task>
     {
         return repository.getTask(id)
     }
-//    fun getTaskState(taskId: Long): StateFlow<Task?> {
-//        return repository.getTaskFlow(taskId).stateIn(
-//            scope = viewModelScope,
-//            started = SharingStarted.Lazily,
-//            initialValue = null
-//        )
-//    }
 
 }
