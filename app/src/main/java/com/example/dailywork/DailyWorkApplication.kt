@@ -5,11 +5,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.dailywork.uiElements.CustomTopBar
 import com.example.dailywork.uiElements.EditScreen
@@ -20,15 +20,20 @@ import com.example.dailywork.viewmodel.dwViewModel
 @Composable
 fun DailyWorkApplication(viewModel: dwViewModel) {
     val navController = rememberNavController()
-
+    val currentRoute=navController.currentBackStackEntryAsState().value?.destination?.route
+    val isEditScreen = currentRoute == Screen.EditScreen.route
     Scaffold(
         topBar = {
             CustomTopBar(navHostController = navController)
         },
-        containerColor = Color(0xFF1F2D2D),
+        containerColor = Color(0xFF002233),
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { navController.navigate(Screen.EditScreen.route) },
+                onClick = {
+                    if(!isEditScreen)
+                    navController.navigate(Screen.EditScreen.route)
+
+                          },
                 shape = FloatingActionButtonDefaults.shape
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add Task")
@@ -48,25 +53,11 @@ fun DailyWorkApplication(viewModel: dwViewModel) {
                 )
             }
             // EditScreen: Add/Edit a task
-            composable(Screen.EditScreen.route + "?taskId={taskId}") { backStackEntry ->
-                val taskId = backStackEntry.arguments?.getString("taskId")?.toLongOrNull()
-                val taskState = taskId?.let { viewModel.getTaskState(it).collectAsState(initial = null) }
-
-                EditScreen(
-                    modifier = Modifier.padding(innerPadding),
-                    task = taskState?.value,
-                    onSave = { updatedTask ->
-                        if (taskId == null) {
-                            viewModel.addTask(updatedTask) // Adding a new task
-                        } else {
-                            viewModel.editTask(updatedTask) // Editing an existing task
-                        }
-                        navController.popBackStack()
-                    },
-                    onCancel = {
-                        navController.popBackStack()
-                    }
-                )
+            composable(Screen.EditScreen.route){
+                EditScreen(onCancel ={navController.popBackStack()},
+                 //   onSave ={viewModel.addTask()})
+                    viewModel = viewModel,
+                    navHostController = navController)
             }
         }
     }
