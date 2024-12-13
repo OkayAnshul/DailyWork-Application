@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dailywork.database.Task
 import com.example.dailywork.database.dwRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -18,11 +19,11 @@ class dwViewModel(private val repository: dwRepository) : ViewModel() {
 
     var currentTitle by mutableStateOf("")
 
-    fun ChangeToEdit(){
-        currentTitle="Wanna Edit?"
-    }
-    fun ChangeToAdd(){
-        currentTitle="Add Something?"
+    fun ChangeTitle(taskId:Long){
+        if(taskId>0)
+            currentTitle="Wanna Edit?"
+        else
+            currentTitle="Add Something?"
     }
     // StateFlow for the task list
     val allTask: StateFlow<List<Task>> = repository.getAllTask
@@ -81,20 +82,10 @@ class dwViewModel(private val repository: dwRepository) : ViewModel() {
         }
     }
 
-      // Mutable state for a single task
-    private val _task = mutableStateOf<Task?>(null)
-    val task: Task? get() = _task.value
-
     // Fetch a task by ID and update the state
-    fun getTask(id: Long) {
-        viewModelScope.launch {
-            try {
-                _task.value = repository.getTask(id)
-            } catch (e: Exception) {
-                // Log or handle error
-                _task.value = null
-            }
-        }
+    fun getTask(id:Long):Flow<Task>
+    {
+        return repository.getTask(id)
     }
 //    fun getTaskState(taskId: Long): StateFlow<Task?> {
 //        return repository.getTaskFlow(taskId).stateIn(

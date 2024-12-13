@@ -6,7 +6,7 @@ class dwRepository(private val dao: dwDao) {
 
     val getAllTask: Flow<List<Task>> = dao.getAllTask()
 
-    suspend fun getTask(id: Long):Task? {
+     fun getTask(id: Long):Flow<Task> {
         return dao.getTask(id)
     }
 

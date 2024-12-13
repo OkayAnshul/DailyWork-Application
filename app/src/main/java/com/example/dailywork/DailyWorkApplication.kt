@@ -27,10 +27,9 @@ import com.example.dailywork.viewmodel.dwViewModel
 fun DailyWorkApplication(viewModel: dwViewModel) {
     val navController = rememberNavController()
     val currentRoute=navController.currentBackStackEntryAsState().value?.destination?.route
-    val isEditScreen = currentRoute == Screen.EditScreen.route
+    val isHomeScreen = currentRoute == Screen.HomeScreen.route
 
-
-    if(!isEditScreen)
+        if (isHomeScreen)
         viewModel.currentTitle ="DailyWork"
 
     Scaffold(
@@ -42,9 +41,9 @@ fun DailyWorkApplication(viewModel: dwViewModel) {
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    if(!isEditScreen) {
+                    if(isHomeScreen) {
                         val taskId=0L
-                        viewModel.ChangeToAdd()
+                        viewModel.ChangeTitle(taskId)
                         navController.navigate(Screen.EditScreen.route+"/${taskId}")
                     }
 
@@ -65,6 +64,7 @@ fun DailyWorkApplication(viewModel: dwViewModel) {
                 HomeScreen(
                     viewModel = viewModel,
                     onEdit ={taskId ->
+                        viewModel.ChangeTitle(taskId)
                         navController.navigate(Screen.EditScreen.route+"/$taskId")
                     }
                 )

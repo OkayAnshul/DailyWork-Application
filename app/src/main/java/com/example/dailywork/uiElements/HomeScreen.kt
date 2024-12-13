@@ -88,7 +88,6 @@ fun HomeScreen(
                             viewModel.removeTask(task)
                         },
                         onEdit = {
-                            viewModel.ChangeToEdit()
                             onEdit(task.id)
                         },
                         onTaskStatusChange = {

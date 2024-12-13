@@ -12,6 +12,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,7 +26,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.dailywork.database.Task
 import com.example.dailywork.viewmodel.dwViewModel
-import kotlinx.coroutines.coroutineScope
 
 @Composable
 fun EditScreen(
@@ -35,22 +35,20 @@ fun EditScreen(
     viewModel:dwViewModel,
     navHostController: NavHostController
 ) {
-    var taskName by remember { mutableStateOf( "") }
+    var taskName by remember { mutableStateOf("") }
     var taskDescription by remember { mutableStateOf("") }
-    if(taskId > 0)
-    {
-        // Trigger fetching the task
-        LaunchedEffect(taskId) {
-            viewModel.getTask(taskId)
-        }
-        // Observe the task state
-        val task = viewModel.task
+    var isTaskLoaded by remember { mutableStateOf(false) }
 
-        if (task != null) {
-            taskName=task.title
-            taskDescription=task.description
+    // Fetch the task only if taskId > 0
+    if (taskId > 0) {
+        val task by viewModel.getTask(taskId).collectAsState(initial = null)
+        LaunchedEffect(task) {
+            if (task != null && !isTaskLoaded) {
+                taskName = task!!.title
+                taskDescription = task!!.description
+                isTaskLoaded = true
+            }
         }
-
     }
     Column(
         modifier = Modifier
@@ -66,7 +64,6 @@ fun EditScreen(
             label = { Text("Task Name") },
             colors = OutlinedTextFieldDefaults.colors(Color.White
                 , unfocusedTextColor = Color.LightGray),
-            isError = taskName.isBlank()
         )
         OutlinedTextField(
             value = taskDescription,
@@ -88,7 +85,8 @@ fun EditScreen(
                 if (taskName.isNotBlank()) {
                     if(taskDescription.isBlank())
                         taskDescription="Aree cutie, description bhi daal do🫣"
-                    val newTask=Task(title = taskName.trim(),
+                    val newTask=Task(id =if(taskId>0)taskId else 0,
+                        title = taskName.trim(),
                         description = taskDescription.trim())
                     if(taskId>0)
                         viewModel.editTask(newTask)

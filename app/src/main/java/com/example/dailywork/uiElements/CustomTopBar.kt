@@ -25,10 +25,10 @@ fun CustomTopBar(title:String,
     // Observe the current route
 
     val currentRoute=navHostController.currentBackStackEntryAsState().value?.destination?.route
-    val isEditScreen = currentRoute == Screen.EditScreen.route
+    val isHomeScreen = currentRoute == Screen.HomeScreen.route
 
     val navigationIcon: @Composable (() -> Unit) = {
-        if (isEditScreen)
+        if (!isHomeScreen)
         // Create a back arrow icon button
         {
             IconButton(onClick = { navHostController.popBackStack() }) {

@@ -24,7 +24,7 @@ interface dwDao {
 
     // Suspend function to get a single task by ID (if required)
     @Query("SELECT * FROM dw_table WHERE id = :id")
-    suspend fun getTask(id: Long): Task?
+     fun getTask(id: Long): Flow<Task>
 
     // New function to observe a single task dynamically as a Flow
 //    @Query("SELECT * FROM dw_table WHERE id = :id")
