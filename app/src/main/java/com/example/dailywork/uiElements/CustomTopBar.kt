@@ -9,7 +9,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -20,15 +19,16 @@ import com.example.dailywork.R
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun CustomTopBar(navHostController: NavHostController) {
+fun CustomTopBar(title:String,
+                 navHostController: NavHostController,
+                 ) {
     // Observe the current route
 
-    val backStackEntry by navHostController.currentBackStackEntryAsState()
-    val currentRoute = backStackEntry?.destination?.route
-    val isHomeScreen = currentRoute == Screen.HomeScreen.route
+    val currentRoute=navHostController.currentBackStackEntryAsState().value?.destination?.route
+    val isEditScreen = currentRoute == Screen.EditScreen.route
 
     val navigationIcon: @Composable (() -> Unit) = {
-        if (!isHomeScreen)
+        if (isEditScreen)
         // Create a back arrow icon button
         {
             IconButton(onClick = { navHostController.popBackStack() }) {
@@ -44,7 +44,7 @@ fun CustomTopBar(navHostController: NavHostController) {
     CenterAlignedTopAppBar(
         title = {
             Text(
-                currentRoute.toString(),
+                title,
                 fontSize =26.sp,
                 fontFamily = FontFamily(Font(R.font.architects_daughter)) // Set custom font
             )

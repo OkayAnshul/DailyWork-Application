@@ -6,9 +6,8 @@ class dwRepository(private val dao: dwDao) {
 
     val getAllTask: Flow<List<Task>> = dao.getAllTask()
 
-    // Changed this to return a Flow<Task?> for observing the task dynamically
-    fun getTaskFlow(id: Long): Flow<Task?> {
-        return dao.getTaskFlow(id)
+    suspend fun getTask(id: Long):Task? {
+        return dao.getTask(id)
     }
 
     suspend fun createTask(task: Task) {

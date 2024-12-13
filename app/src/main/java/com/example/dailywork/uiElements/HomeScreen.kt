@@ -1,5 +1,6 @@
 package com.example.dailywork.uiElements
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -39,20 +40,11 @@ import com.example.dailywork.R
 import com.example.dailywork.database.Task
 import com.example.dailywork.viewmodel.dwViewModel
 
-
-object DummyData{
-    val task= listOf(Task(0,"One","desc1"),
-        Task(1,"Two","desc2"),
-        Task(2,"Three","desc3"),
-        Task(3,"Four","desc4"),
-        Task(4,"Five","desc5"))
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier,
-    viewModel: dwViewModel
+    viewModel: dwViewModel,
+    onEdit: (taskId:Long) -> Unit
 ) {
     // Observe tasks using collectAsState
     val tasks = viewModel.allTask.collectAsState(initial = emptyList())
@@ -96,6 +88,8 @@ fun HomeScreen(
                             viewModel.removeTask(task)
                         },
                         onEdit = {
+                            viewModel.ChangeToEdit()
+                            onEdit(task.id)
                         },
                         onTaskStatusChange = {
                             //isDone ->
@@ -109,6 +103,7 @@ fun HomeScreen(
 }
 
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
 fun TaskBar(
     task: Task,
@@ -117,9 +112,12 @@ fun TaskBar(
     onTaskStatusChange: (Boolean) -> Unit
 ) {
     val DarkGreen = Color(0xFF00334d)
+
         Card(
             modifier = Modifier
-                .clickable { onEdit() }
+                .clickable {
+                    onEdit()
+                }
                 .fillMaxWidth()
                 .padding(horizontal = 6.dp),
             colors = CardDefaults.cardColors(DarkGreen),
