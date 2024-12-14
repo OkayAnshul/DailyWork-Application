@@ -84,7 +84,7 @@ fun EditScreen(
             Button(onClick = {
                 if (taskName.isNotBlank()) {
                     if(taskDescription.isBlank())
-                        taskDescription="Aree cutie, description bhi daal do🫣"
+                        taskDescription=""
                     val newTask=Task(id =if(taskId>0)taskId else 0,
                         title = taskName.trim(),
                         description = taskDescription.trim())
