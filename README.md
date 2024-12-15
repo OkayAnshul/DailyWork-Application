@@ -16,9 +16,9 @@ Welcome to the **Daily Work To-Do Application**! This is a sleek, user-friendly 
 
 ## Screenshots
 <p align="center">
+<img src="https://github.com/user-attachments/assets/22b1eb9e-6b31-418a-9e60-bc44cf960211" width="250">
 <img src="https://github.com/user-attachments/assets/2e8e5150-d196-41e4-828f-9882915e3c4b" width="250">
 <img src="https://github.com/user-attachments/assets/a2c6f27b-f946-40af-a7bc-336ec4af6054" width="250">
-<img src="https://github.com/user-attachments/assets/22b1eb9e-6b31-418a-9e60-bc44cf960211" width="250">
 </p>
 ---
 
