@@ -138,8 +138,8 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 For any queries or support, reach out to:
 
-- **Email:** [your\_email@example.com](mailto\:anshulisokay@gmail.com)
-- **GitHub:** [your\_username](https://github.com/OkayAnshul)
+- **Email:** [anshulisokay@gmail.com](mailto\:anshulisokay@gmail.com)
+- **GitHub:** OkayAnshul](https://github.com/OkayAnshul)
 
 ---
 
